@@ -4,4 +4,11 @@ from typing import Optional
 
 class CreateBook(BaseModel):
     book_name: str
-    link: Optional[str]
+    author: str
+    release_year: int
+    book_description: Optional[str]
+    linker: Optional[str]
+
+
+
+
