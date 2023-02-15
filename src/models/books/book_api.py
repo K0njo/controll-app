@@ -9,7 +9,7 @@ from src.models.books.book_schema import CreateBook
 
 router_book = APIRouter(prefix="/book")
 
-@router_book.get("/found_book/")
+@router_book.get("/found-book/")
 def get_book(book_name: str, db: Session = Depends(get_db)):
     book_name = db.query(Book).filter(Book.book_name == book_name).first()
     if not book_name:
@@ -17,13 +17,13 @@ def get_book(book_name: str, db: Session = Depends(get_db)):
     return book_name
 
 
-@router_book.get("/all_book/")
+@router_book.get("/all-book/")
 def get_book(db: Session = Depends(get_db)):
     books = db.query(Book).all()
     return {"books": books}
 
 
-@router_book.post("/add_book/")
+@router_book.post("/add-book/")
 def post_book(new_book: CreateBook, db: Session = Depends(get_db)):
 
     create_book_model = model.Book()
@@ -44,7 +44,7 @@ def post_book(new_book: CreateBook, db: Session = Depends(get_db)):
 
 
 
-@router_book.put("/update_book/{book_id}")
+@router_book.put("/update-book/{book_id}")
 def update_book(id: int, book: CreateBook, db: Session = Depends(get_db)):
     up_book = db.query(Book).filter(Book.id == id).first()
     if not up_book:
@@ -58,7 +58,7 @@ def update_book(id: int, book: CreateBook, db: Session = Depends(get_db)):
     return {"message": "Book updated"}
 
 
-@router_book.delete("/delete_book/{book_id}")
+@router_book.delete("/delete-book/{book_id}")
 def delete_book(id: int, db: Session = Depends(get_db)):
     book = db.query(Book).filter(Book.id == id).first()
     if not book:
