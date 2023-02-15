@@ -1,4 +1,4 @@
-from cffi import model
+import src.models.books.book_model as model
 from fastapi import APIRouter, Depends, HTTPException
 from pymysql import IntegrityError
 from sqlalchemy.orm import Session
