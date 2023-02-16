@@ -1,6 +1,6 @@
 from pydantic import BaseModel
+from typing import Dict
 
-
-class TopiSchema(BaseModel):
+class TopicSchema(BaseModel):
     question: str
-    answer: str
+    answer: Dict[str, str]
