@@ -3,11 +3,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from pymysql import IntegrityError
 from sqlalchemy.orm import Session
 
-from src.auth.authentication_api import get_db
+from src.database_connection import get_db
 from src.models.books.book_model import Book
 from src.models.books.book_schema import CreateBook
 
 router_book = APIRouter(prefix="/book")
+
 
 @router_book.get("/found-book/")
 def get_book(book_name: str, db: Session = Depends(get_db)):
@@ -24,24 +25,21 @@ def get_book(db: Session = Depends(get_db)):
 
 
 @router_book.post("/add-book/")
-def post_book(new_book: CreateBook, db: Session = Depends(get_db)):
-
-    create_book_model = model.Book()
-
-    create_book_model.book_name = new_book.book_name
-    create_book_model.author = new_book.author
-    create_book_model.release_year = new_book.release_year
-    create_book_model.book_description = new_book.book_description
-    create_book_model.linker = new_book.linker
+def post_book(book_add: CreateBook, db: Session = Depends(get_db)):
+    new_book = Book(book_name=book_add.book_name,
+                    author=book_add.author,
+                    release_year=book_add.release_year,
+                    book_description=book_add.book_description,
+                    linker=book_add.linker)
 
     try:
-        db.add(create_book_model)
+        db.add(new_book)
         db.commit()
+        db.refresh(new_book)
     except IntegrityError:
         raise HTTPException(status_code=400, detail="Book already exists")
 
     return {"message": "Created"}
-
 
 
 @router_book.put("/update-book/{book_id}")
