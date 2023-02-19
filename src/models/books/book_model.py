@@ -10,4 +10,4 @@ class Book(Base):
     author = Column(String(100))
     release_year = Column(Integer)
     book_description = Column(String(500))
-    linker = Column(String(100), unique=False)
+    linker = Column(String(100), unique=True)
