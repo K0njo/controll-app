@@ -37,7 +37,7 @@ def new_topic(new_topic: TopicSchema, db: Session = Depends(get_db)):
     except IntegrityError:
         raise HTTPException (status_code=400,detail='Topic already exists')
 
-    return {'Topic has been created'}
+    return 'Topic has been created'
 
 
 @router_topic.put("/topic-update/{topic_id}")
@@ -52,15 +52,16 @@ def update_topic(id: int, topic: TopicSchema, db: Session = Depends(get_db)):
 
     db.commit()
 
-    return("Topic has been updated")
+    return "Topic has been updated"
 
 @router_topic.delete("/topic-delete/{topic_id}")
 def delete_topic(id: int, db: Session = Depends(get_db)):
         topic = db.query(Topic).filter(Topic.id == id).first()
+
         if not topic:
             raise HTTPException (status_code=404, detail="Topic doesn't exist")
 
         db.delete(topic)
         db.commit()
 
-        return('Topic has been deleted')
+        return 'Topic has been deleted'
