@@ -8,14 +8,17 @@ from src.models.lessons.lesson_model import Lesson
 
 router_lessons = APIRouter(prefix="/lessons")
 
-@router_lessons.get("/all-lessons")
+@router_lessons.get("/all-lessons/")
 def get_all_lessons(db: Session = Depends(get_db)):
     all_lessons = db.query(Lesson).all()
+
     return all_lessons
 
 @router_lessons.get("/lessons/{lesson_id}")
 def get_lesson(lesson_id: int, db:Session = Depends(get_db)):
+
     lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
+
     if not lesson:
         raise HTTPException (status_code= 404, detail="Lesson doesn't exist")
     return lesson
@@ -33,6 +36,7 @@ def add_lesson(new_lesson: LessonSchema, db: Session = Depends(get_db)):
     try:
         db.add(create_lesson_model)
         db.commit()
+
     except IntegrityError:
         raise HTTPException(status_code= 400, detail="Lesson already exists")
 
@@ -40,7 +44,7 @@ def add_lesson(new_lesson: LessonSchema, db: Session = Depends(get_db)):
 
 
 @router_lessons.put("/update-lesson/{lesson_id}")
-def update_lesson(lesson_id:int, lesson: LessonSchema, db: Session = Depends(get_db)):
+def update_lesson(lesson_id: int, lesson: LessonSchema, db: Session = Depends(get_db)):
     update_lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
 
     if not update_lesson:
@@ -52,15 +56,16 @@ def update_lesson(lesson_id:int, lesson: LessonSchema, db: Session = Depends(get
 
     db.commit()
 
-
     return "Lesson has been updated"
 
 
-@router_lessons.delete("delete-lesson/{lesson_id}")
-def delete_lesson(lesson_id: int, db:Session = Depends(get_db)):
+@router_lessons.delete("/delete-lesson/{lesson_id}")
+def delete_lesson(lesson_id: int, db: Session = Depends(get_db)):
     lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
+
     if not lesson:
         raise HTTPException (status_code= 404, detail="Lesson doesn't exists")
+
     db.delete(lesson)
     db.commit()
 
