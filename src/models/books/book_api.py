@@ -1,5 +1,5 @@
-import src.models.books.book_model as model
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import FileResponse
 from pymysql import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -19,9 +19,18 @@ def get_book(book_name: str, db: Session = Depends(get_db)):
 
 
 @router_book.get("/all-book/")
-def get_book(db: Session = Depends(get_db)):
-    books = db.query(Book).all()
+def get_book(page: int = 1, page_size: int = 10, db: Session = Depends(get_db)):
+    skip = (page - 1) * page_size
+    books = db.query(Book).offset(skip).limit(page_size).all()
     return {"books": books}
+
+
+@router_book.get("/{book_id}/download-book")
+def download_book(book_id: int, db: Session = Depends(get_db)):
+    file_book = db.query(Book).filter(Book.id == book_id).first()
+    if not file_book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return FileResponse(path=file_book.linker, filename=file_book.book_name, media_type='application/msword')
 
 
 @router_book.post("/add-book/")
