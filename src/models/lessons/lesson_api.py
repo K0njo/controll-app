@@ -9,8 +9,9 @@ from src.models.lessons.lesson_model import Lesson
 router_lessons = APIRouter(prefix="/lessons")
 
 @router_lessons.get("/all-lessons/")
-def get_all_lessons(db: Session = Depends(get_db)):
-    all_lessons = db.query(Lesson).all()
+def get_all_lessons(page: int = 1, page_size: int = 5, db: Session = Depends(get_db)):
+    skip = (page-1) * page_size
+    all_lessons = db.query(Lesson).offset(skip).limit(page_size).all()
 
     return all_lessons
 
@@ -21,6 +22,7 @@ def get_lesson(lesson_id: int, db:Session = Depends(get_db)):
 
     if not lesson:
         raise HTTPException (status_code= 404, detail="Lesson doesn't exist")
+
     return lesson
 
 
