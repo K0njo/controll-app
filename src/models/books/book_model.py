@@ -6,8 +6,8 @@ class Book(Base):
     __tablename__ = 'books'
 
     id = Column(Integer, primary_key=True, index=True)
-    book_name = Column(String(100))
-    author = Column(String(100))
-    release_year = Column(Integer)
-    book_description = Column(String(500))
+    book_name = Column(String(100), nullable=False)
+    author = Column(String(100), nullable=False)
+    release_year = Column(Integer, nullable=False)
+    book_description = Column(String(500), nullable=False)
     linker = Column(String(100), unique=False)

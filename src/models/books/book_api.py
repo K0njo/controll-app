@@ -7,15 +7,23 @@ from src.database_connection import get_db
 from src.models.books.book_model import Book
 from src.models.books.book_schema import CreateBook
 
-router_book = APIRouter(prefix="/book")
+router_book = APIRouter(prefix="/book", tags=["book"])
 
 
-@router_book.get("/found-book/")
+@router_book.get("/found-book-name/")
 def get_book(book_name: str, db: Session = Depends(get_db)):
-    book_name = db.query(Book).filter(Book.book_name == book_name).first()
-    if not book_name:
+    our_book_name = db.query(Book).filter(Book.book_name == book_name).first()
+    if not our_book_name:
         raise HTTPException(status_code=404, detail="Book not found")
-    return book_name
+    return our_book_name
+
+
+@router_book.get("/found-book-id/")
+def get_book_id(book_id: int, db: Session = Depends(get_db)):
+    book = db.query(Book).filter(Book.id == book_id).first()
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return book
 
 
 @router_book.get("/all-book/")
@@ -51,7 +59,7 @@ def post_book(book_add: CreateBook, db: Session = Depends(get_db)):
     return {"message": "Created"}
 
 
-@router_book.put("/update-book/{book_id}")
+@router_book.patch("/update-book/{book_id}")
 def update_book(id: int, book: CreateBook, db: Session = Depends(get_db)):
     up_book = db.query(Book).filter(Book.id == id).first()
     if not up_book:
