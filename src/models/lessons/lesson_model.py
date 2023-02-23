@@ -1,7 +1,7 @@
 from src.database_connection import Base
 from sqlalchemy import Integer, Column, String, Boolean, ForeignKey
 from src.models.media_file.medi_model import Media
-from src.models.test_topic.topic_model import  Topic
+from src.models.test_topic.topic_model import Topic
 
 class Lesson(Base):
     __tablename__ = 'lesson'
