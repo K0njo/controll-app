@@ -45,7 +45,7 @@ def add_lesson(new_lesson: LessonSchema, db: Session = Depends(get_db)):
     return "Lesson has been created"
 
 
-@router_lessons.put("/update-lesson/{lesson_id}")
+@router_lessons.patch("/update-lesson/{lesson_id}")
 def update_lesson(lesson_id: int, lesson: LessonSchema, db: Session = Depends(get_db)):
     update_lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
 
