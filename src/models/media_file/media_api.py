@@ -34,7 +34,7 @@ def add_mediafile(new_mediafile: MediaSchema, db: Session = Depends(get_db)):
     return "MediaFile has been added"
 #
 #
-@router_media.put("/update-mediafile/{media_id}")
+@router_media.patch("/update-mediafile/{media_id}")
 def update_media(media_id: int, media: MediaSchema, db: Session = Depends(get_db)):
     update_mediafile = db.query(Media).filter(Media.id == media_id).first()
 
