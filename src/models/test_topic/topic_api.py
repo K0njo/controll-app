@@ -3,7 +3,7 @@ import random
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.session import Session
-from src.auth.authentication_api import get_db
+from src.database_connection import get_db
 from src.models.test_topic.topic_model import Topic
 from src.models.test_topic import topic_model as model
 from src.models.test_topic.topic_schema import TopicSchema
