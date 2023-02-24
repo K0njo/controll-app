@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from src.auth.authentication_api import router_auth
 from src.database_connection import engine, Base
 from src.models.books.book_api import router_book
+from src.models.test_topic.topic_api import router_topic
 
 app = FastAPI()
 
