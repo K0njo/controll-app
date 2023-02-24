@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from starlette import status
 
-from src.database_connection import SessionLocal, engine
+from src.database_connection import get_db
 from src.auth.authentication import get_password_hash, authenticate_user, create_access_token, get_token_exception
 import src.models.user.user_model as model
 from src.models.user.user_schema import UserSchema
@@ -14,16 +14,6 @@ router_auth = APIRouter(
     prefix='/user',
     tags=['user']
 )
-
-model.Base.metadata.create_all(bind=engine)
-
-
-def get_db():
-    try:
-        db = SessionLocal()
-        yield db
-    finally:
-        db.close()
 
 
 @router_auth.post("/create/user")
