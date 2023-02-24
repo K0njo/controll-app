@@ -6,7 +6,7 @@ from src.models.media_file import medi_model as model
 from src.models.media_file.medi_model import Media
 from src.models.media_file.media_schema import MediaSchema
 
-router_media = APIRouter(prefix='/media')
+router_media = APIRouter(prefix='/media', tags=['media'])
 
 @router_media.get("/{media_id}/")
 def get_mediafile(media_id: int, db: Session = Depends(get_db)):
