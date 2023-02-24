@@ -8,6 +8,7 @@ app = FastAPI()
 
 app.include_router(router_auth)
 app.include_router(router_book)
+app.include_router(router_topic)
 
 Base.metadata.create_all(bind=engine)
 
