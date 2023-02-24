@@ -40,7 +40,7 @@ def new_topic(new_topic: TopicSchema, db: Session = Depends(get_db)):
     return 'Topic has been created'
 
 
-@router_topic.put("/topic-update/{topic_id}")
+@router_topic.patch("/topic-update/{topic_id}")
 def update_topic(id: int, topic: TopicSchema, db: Session = Depends(get_db)):
     update_topic = db.query(Topic).filter(Topic.id == id).first()
 
