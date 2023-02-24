@@ -38,7 +38,7 @@ def post_book(qwestion_add: LevelSchema, db: Session = Depends(get_db)):
     return {"message": "Created qwestion"}
 
 
-@router_level_test.put("/update-book/{book_id}")
+@router_level_test.patch("/update-book/{book_id}")
 def update_book(id: int, qwestion: LevelSchema, db: Session = Depends(get_db)):
     up_qwestion = db.query(Level).filter(Level.id == id).first()
     if not up_qwestion:
