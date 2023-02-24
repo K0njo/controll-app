@@ -6,7 +6,7 @@ from src.models.lessons.lesson_schema import LessonSchema
 from src.models.lessons import lesson_model as model
 from src.models.lessons.lesson_model import Lesson
 
-router_lessons = APIRouter(prefix="/lessons")
+router_lessons = APIRouter(prefix="/lessons", tags=["lessons"])
 
 @router_lessons.get("/all-lessons/")
 def get_all_lessons(page: int = 1, page_size: int = 5, db: Session = Depends(get_db)):
