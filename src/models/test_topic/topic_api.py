@@ -8,7 +8,7 @@ from src.models.test_topic.topic_model import Topic
 from src.models.test_topic import topic_model as model
 from src.models.test_topic.topic_schema import TopicSchema
 
-router_topic = APIRouter(prefix="/topic-test")
+router_topic = APIRouter(prefix="/topic-test", tags=["topic test"])
 
 
 @router_topic.get("/topics/{topic_id}")
