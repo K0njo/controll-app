@@ -8,7 +8,7 @@ from src.database_connection import get_db
 
 router = APIRouter(
     prefix="/users",
-    tags=["users"],
+    tags=["users", ],
 )
 
 
@@ -27,19 +27,9 @@ def get_user_by_email(user_email: EmailStr, db: Session = Depends(get_db)):
     return crud.get_user_by_email(db, user_email)
 
 
-@router.get("/all/", response_model=list[schemas.UserDisplay])
+@router.get("/all/users/", response_model=list[schemas.UserDisplay])
 def get_users(page: int = 1, page_size: int = 10, db: Session = Depends(get_db)):
     return crud.get_users(db, page, page_size)
-
-
-@router.post("/new/", response_model=schemas.UserDisplay)
-def create_user(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
-    return crud.create_user(db, user_data)
-
-
-@router.patch("/{user_id}/", response_model=schemas.UserDisplay)
-def update_user(user_id: int, user_data: schemas.UserUpdate, db: Session = Depends(get_db)):
-    return crud.update_user(db, user_id, user_data)
 
 
 @router.delete("/{user_id}/", response_model=dict)

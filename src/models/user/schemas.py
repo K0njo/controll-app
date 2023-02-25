@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Optional
 
 from fastapi import HTTPException
-from pydantic import BaseModel, EmailStr, validator
+from pydantic import BaseModel, EmailStr, validator, SecretStr
 from starlette import status
 
 
@@ -19,15 +19,15 @@ class UserCreate(BaseModel):
     email: EmailStr
     first_name: Optional[str]
     last_name: Optional[str]
-    password: str
+    password: SecretStr
     _role: Role = Role.user
 
-    @validator('password')
+    @validator('password', pre=True)
     def password_length(cls, v):
         if len(v) < 8:
             raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                                 detail='password must be at least 8 characters')
-        return v
+        return SecretStr(v)
 
     @validator('email', pre=True)
     def email_format(cls, v):
@@ -44,30 +44,6 @@ class UserCreate(BaseModel):
     @property
     def role(self):
         return self._role
-
-
-class UserUpdate(BaseModel):
-    username: Optional[str]
-    email: Optional[EmailStr]
-    first_name: Optional[str]
-    last_name: Optional[str]
-    password: Optional[str]
-
-    @validator('password')
-    def password_length_if_exists(cls, v):
-        if v and len(v) < 8:
-            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                                detail='password must be at least 8 characters')
-        return v
-
-    @validator('email', pre=True)
-    def email_format(cls, v):
-        try:
-            EmailStr.validate(v)
-        except ValueError:
-            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                                detail='invalid email format')
-        return v
 
 
 class UserDisplay(BaseModel):
