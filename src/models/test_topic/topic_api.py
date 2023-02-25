@@ -15,10 +15,16 @@ router_topic = APIRouter(prefix="/topic-test", tags=["topic test"])
 def get_topic(topic_id: int, db: Session = Depends(get_db)):
     topic = db.query(Topic).filter(Topic.id == topic_id).first()
 
-    answers = list(topic.answer.values())
-    random.shuffle(answers)
+    if not topic:
+        raise HTTPException(status_code=404, detail="Topic doesn't exist")
+    response = {
+        "question": topic.question,
+        "answer": list(topic.answer.values())
+    }
 
-    response = {"question": topic.question, "answer": answers}
+    random.shuffle(response["answer"])
+
+    response["answer"] = {key: response["answer"].pop() for key in sorted(topic.answer.keys())}
 
     return response
 
