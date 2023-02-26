@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.session import Session
-from src.auth.authentication_api import get_db
+from src.database_connection import get_db
 from src.models.media_file import medi_model as model
 from src.models.media_file.medi_model import Media
 from src.models.media_file.media_schema import MediaSchema
